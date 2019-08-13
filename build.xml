@@ -1,7 +1,7 @@
 <project name="FileUpload" default="compile" basedir=".">
 
 <taskdef resource="com/puppycrawl/tools/checkstyle/ant/checkstyle-ant-task.properties"
-         classpath="WebContent/WEB-INF/lib/checkstyle-7.8.2-all.jar"/>
+         classpath="WebContent/WEB-INF/lib/checkstyle-8.23-all"/>
 	
 	<path id="compile.classpath">
 		<fileset dir="WebContent/WEB-INF/lib">
