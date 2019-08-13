@@ -23,7 +23,7 @@
     
 	<target name="checkstyle" >
 		<checkstyle config="sun_checks.xml" failOnViolation="false">
-			<fileset dir="src/example" includes="**/*.java"/>
+			<fileset dir="src/UploadAnyFile" includes="**/*.java"/>
 			<formatter type="xml" toFile="checkstyle_errors.xml"/>
 		</checkstyle>
 	</target>
