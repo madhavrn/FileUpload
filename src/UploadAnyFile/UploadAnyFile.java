@@ -11,6 +11,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
+// import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +22,8 @@ import javax.servlet.http.Part;
 /**
  * Servlet implementation class UploadAnyFile
  */
-@WebServlet(description = "This will take a file from any folder and uploads it to the server", urlPatterns = { "/UploadAnyFile" })
+@WebServlet(name = "UploadAnyFile", description = "This will take a file from any folder and uploads it to the server", urlPatterns = { "/UploadAnyFile" })
+@MultipartConfig
 public class UploadAnyFile extends HttpServlet {
     private final static Logger LOGGER =
             Logger.getLogger(UploadAnyFile.class.getCanonicalName());
@@ -47,8 +49,11 @@ public class UploadAnyFile extends HttpServlet {
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
         
-        System.out.println("The file is "+path+filePart+fileName);
-        response.getWriter().append("The file to: "+path+filePart+fileName);
+        response.getWriter().write("\n </br>");
+        System.out.println("In Process request My file is "+path+" "+fileName);
+        response.getWriter().write("\n </br>");
+        response.getWriter().append("In Process request The file to: "+path+" "+fileName);
+        response.getWriter().write("\n </br>");
         OutputStream out = null;
         InputStream filecontent = null;
         final PrintWriter writer = response.getWriter();
@@ -102,12 +107,12 @@ public class UploadAnyFile extends HttpServlet {
     }	
     
     
-    
+/*
     public UploadAnyFile() {
         super();
         // TODO Auto-generated constructor stub
     }
-
+*/
 	/**
 	 * @see Servlet#getServletConfig()
 	 */
@@ -119,32 +124,58 @@ public class UploadAnyFile extends HttpServlet {
 	/**
 	 * @see Servlet#getServletInfo()
 	 */
-/*	public String getServletInfo() {
+    @Override
+	public String getServletInfo() {
 		// TODO Auto-generated method stub
-		return null; 
+		   return "Servlet that uploads files to a user-defined destination"; 
 	}
-*/
+
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("The call ");
+		response.getWriter().write("\n </br>");
+		response.getWriter().append("The parts are: ").append(request.getPathInfo());
+		response.getWriter().write("\n </br>");
 		response.getWriter().append("Uploaded to: ").append(request.getContextPath());
+		response.getWriter().write("\n </br>");
+		 response.getWriter().append("Destination Path is:  ").append(request.getParameter("destination"));
+		 response.getWriter().write("\n </br>");
+		 System.out.println("The file is "+request.getParameter("destination")+request.getPart("file"));
+		 //call Process Request
+		 processRequest(request, response);
+		System.out.println("The call 2");
 	}
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
 	 */
+	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		System.out.println("The First call ");
+		String name = request.getParameter("destination");
+		System.out.println("The second call ");
+		PrintWriter pw = response.getWriter();
+		pw.write("\n </br>");
+		pw.write("\n The destinations is </br>"+name);
+		pw.write("\n </br>");
+		//Do get call
 		doGet(request, response);
+		pw.write("\n </br>");
+		System.out.println("The End call ");
 	}
 
 	/**
 	 * @see HttpServlet#doPut(HttpServletRequest, HttpServletResponse)
 	 */
+	/*
 	protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-	}
+	} 
+	*/
 
 }
