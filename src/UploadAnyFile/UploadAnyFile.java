@@ -48,19 +48,19 @@ public class UploadAnyFile extends HttpServlet {
         final String path = request.getParameter("destination");
         final Part filePart = request.getPart("file");
         final String fileName = getFileName(filePart);
+        final String absfilename = fileName.substring(fileName.lastIndexOf("\\")+1);
         
-        response.getWriter().write("\n </br>");
-        System.out.println("In Process request My file is "+path+" "+fileName);
-        response.getWriter().write("\n </br>");
-        response.getWriter().append("In Process request The file to: "+path+" "+fileName);
-        response.getWriter().write("\n </br>");
+
         OutputStream out = null;
         InputStream filecontent = null;
         final PrintWriter writer = response.getWriter();
 
         try {
+           // out = new FileOutputStream(new File(path + File.separator
+             //       + fileName));
+        	// important to strip the filename from the path/
             out = new FileOutputStream(new File(path + File.separator
-                    + fileName));
+                    + absfilename));
             filecontent = filePart.getInputStream();
 
             int read;
@@ -69,7 +69,7 @@ public class UploadAnyFile extends HttpServlet {
             while ((read = filecontent.read(bytes)) != -1) {
                 out.write(bytes, 0, read);
             }
-            writer.println("New file " + fileName + " created at " + path);
+            writer.println("New file from  " + fileName + " created at " + path);
             LOGGER.log(Level.INFO, "File {0} being uploaded to {1}",
                     new Object[]{fileName, path});
 
@@ -94,7 +94,12 @@ public class UploadAnyFile extends HttpServlet {
         }
     }
 
-    private String getFileName(final Part part) {
+    private String trim(String fileName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	private String getFileName(final Part part) {
         final String partHeader = part.getHeader("content-disposition");
         LOGGER.log(Level.INFO, "Part Header = {0}", partHeader);
         for (String content : part.getHeader("content-disposition").split(";")) {
@@ -136,18 +141,9 @@ public class UploadAnyFile extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		System.out.println("The call ");
-		response.getWriter().write("\n </br>");
-		response.getWriter().append("The parts are: ").append(request.getPathInfo());
-		response.getWriter().write("\n </br>");
-		response.getWriter().append("Uploaded to: ").append(request.getContextPath());
-		response.getWriter().write("\n </br>");
-		 response.getWriter().append("Destination Path is:  ").append(request.getParameter("destination"));
-		 response.getWriter().write("\n </br>");
-		 System.out.println("The file is "+request.getParameter("destination")+request.getPart("file"));
+
 		 //call Process Request
 		 processRequest(request, response);
-		System.out.println("The call 2");
 	}
 
 	/**
@@ -156,6 +152,7 @@ public class UploadAnyFile extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+/*
 		System.out.println("The First call ");
 		String name = request.getParameter("destination");
 		System.out.println("The second call ");
@@ -163,10 +160,12 @@ public class UploadAnyFile extends HttpServlet {
 		pw.write("\n </br>");
 		pw.write("\n The destinations is </br>"+name);
 		pw.write("\n </br>");
+*/		
 		//Do get call
 		doGet(request, response);
-		pw.write("\n </br>");
-		System.out.println("The End call ");
+
+		//		pw.write("\n </br>");
+		//		System.out.println("The End call ");
 	}
 
 	/**
